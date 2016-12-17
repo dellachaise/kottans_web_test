@@ -1,0 +1,92 @@
+.clearfix::after {
+    display: table;
+    clear: both;
+    content: "";
+}
+header {
+	background-color: #0080ff;
+	height: 50px;
+}
+	.logo {
+		width: 960px;
+		padding: 10px 0;
+		margin: 0 auto;
+		font-size: 1.75rem;
+		color: white;
+	}
+.scoreBord {
+	width: 960px;
+	margin: 0 auto;
+}
+	.scoreBord div {
+		display: inline-block;
+		padding-top: 20px;
+	}
+		.scoreBord p {
+			display: inline-block;
+		}
+		#questionsScore {
+			float: right;
+		}
+
+.layoutBord {
+	width: 710px;
+	margin: 0 auto;
+}
+	.layoutBord button {
+		height: 37px;
+		width: 100%;
+		border: none;
+		margin: 0 0 25px 0;
+		background-color: #0080ff;
+		color: white;
+		font-size: 1.3rem;
+	}
+	.layoutBord h2,
+	.layoutBord h3 {
+		margin:0 0 10px 0;
+		font-weight: normal;
+		text-align: center;
+	}
+	#question {
+		height: 40px;
+		padding: 10px;
+		background-color: #e6e6e6;
+		margin-bottom: 18px;
+	}
+	#corectMark {
+		margin: 0 0 15px 0;
+		color: #00cc00;
+		font-size: 2rem;
+		text-align: center;
+	}
+	#inputBlock {
+		height: 300px;
+		border: 2px solid #e6e6e6;
+		margin: 0 0 25px 0;
+	}
+	#lettersBlock {
+		height: 60px;
+		border: 2px solid #e6e6e6;
+		padding: 10px;
+		margin: 0 0 25px 0;
+		text-align: center;
+	}
+		#lettersBlock div {
+			display: inline-block;
+			height: 32px;
+			width: 32px;
+			padding: 6px 12px;
+			border: 2px solid #e6e6e6;	
+			font-size: 1.2rem;
+			box-shadow: 2px 2px 1px #e6e6e6;
+		}
+	#nextQuestion {
+		height: 37px;
+		width: 100%;
+		border: none;
+		margin: 0 0 25px 0;
+		background-color: #00cc00;
+		color: white;
+		font-size: 1.3rem;
+	}
