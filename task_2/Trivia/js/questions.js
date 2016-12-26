@@ -8,7 +8,12 @@ var app = {
 	//Elements to input data
 	questionIdArea: $("#questionId"),
 	categoryArea: $("#category"),
-	questionArea: $("#question")
+	questionArea: $("#question"),
+	lettersArea: $("#lettersBlock")
+};
+
+window.onload = function () {
+	app.set_date();
 };
 
 app.get_date = function () {
@@ -33,14 +38,24 @@ app.get_date_obj = function () {
 			app.category = data[key];
 		}
 	}
-	console.log(app.data["id"]);
 } 
-app.get_date_obj();
+
+app.set_letters = function () {
+	var length = app.answer.length;
+	for(var i = 0; i < length; i += 1) {
+		app.lettersArea.append('<button>' + app.answer[i] + '</button>');
+	}
+}
+
 app.set_date = function () {
+	app.get_date_obj();
 	app.questionIdArea.text('Question #'+ app.id);
 	app.categoryArea.text('Category:' + " " + app.category);
 	app.questionArea.text(app.question);
 	console.log(app.answer);
+	app.set_letters();
 }
 
-app.set_date();
+
+
+
