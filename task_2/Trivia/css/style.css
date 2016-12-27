@@ -88,6 +88,7 @@ header {
 			color: black;
 		}
 	#nextQuestion {
+		display: none;
 		height: 37px;
 		width: 100%;
 		border: none;
@@ -109,11 +110,12 @@ header {
 	.incorrect #inputBlock {
 		border: 2px solid red;
 	}
-	.incorrect #nextQuestion,
 	.incorrect #lettersBlock {
 		visibility: hidden;
+	}
+	.correct #nextQuestion {
+		display: block;
 	}
 	.correct #lettersBlock {
 		display: none;
 	}
-	
