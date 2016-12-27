@@ -101,7 +101,6 @@ app.set_letters = function () {
 	for(var i = 0; i < length; i += 1) {
 		app.lettersArea.append('<button>' + lettersArray[i] + '</button>');
 	}
-	console.log(lettersArray);
 }
 
 //interact with letters	- part2 answerLettersBlock
@@ -112,6 +111,7 @@ app.inputAreaEvent = function(e) {
 	for(var i = 0, length = app.userAnswer.length; i < length; i += 1) {
 		if(letter === app.userAnswer[i]) {
 			app.userAnswer.splice(i, 1);
+			console.log($("#inputBlock"));
 			break;
 		}
 	}
@@ -125,32 +125,29 @@ app.inputAreaEvent = function(e) {
 $("body").on('click', "#inputBlock button", app.inputAreaEvent);
 
 //change score counters
-app.nextQuestionEvent = function () {
-	app.counterCorrectAnswers += 1;
+app.commonForCounters = function () {
 	app.counterTotalQuestion += 1;
 	$("#answersScore p").text("Correct Answers: " + app.counterCorrectAnswers);
 	$("#questionsScore p").text("Total Questions: " + app.counterTotalQuestion);
+	app.addLettersArea.empty();
 	app.get_date();
 	app.set_date();
 	app.userAnswer = [];
 	app.layoutBordBlock.removeClass('correct');
-	app.addLettersArea.empty();
 	$("body").on('click', "#inputBlock button", app.inputAreaEvent);
 	app.correctMarkArea.text("");
+}
+app.nextQuestionEvent = function () {
+	app.commonForCounters();
+	app.counterCorrectAnswers += 1;
+	app.layoutBordBlock.removeClass('correct');
 }
 $("#nextQuestion").on("click", app.nextQuestionEvent);
 
 //press SKIP button
 app.skipEvent = function () {
-	app.counterTotalQuestion += 1;
-	$("#answersScore p").text("Correct Answers: " + app.counterCorrectAnswers);
-	$("#questionsScore p").text("Total Questions: " + app.counterTotalQuestion);
-	app.addLettersArea.empty();
 	app.lettersArea.empty();
-	app.get_date();
-	app.set_date();
-	app.userAnswer = [];
+	app.commonForCounters();
 	app.layoutBordBlock.removeClass('incorrect');
-	app.correctMarkArea.text("");
 }
 $("#skipButton").on("click", app.skipEvent);
