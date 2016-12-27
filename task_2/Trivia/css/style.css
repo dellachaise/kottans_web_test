@@ -96,3 +96,24 @@ header {
 		color: white;
 		font-size: 1.3rem;
 	}
+
+	.correct #corectMark p {
+		color: #00cc00;
+	}
+	.correct #inputBlock {
+		border: 2px solid #00cc00;
+	}
+	.incorrect #corectMark p {
+		color: red;
+	}
+	.incorrect #inputBlock {
+		border: 2px solid red;
+	}
+	.incorrect #nextQuestion,
+	.incorrect #lettersBlock {
+		visibility: hidden;
+	}
+	.correct #lettersBlock {
+		display: none;
+	}
+	

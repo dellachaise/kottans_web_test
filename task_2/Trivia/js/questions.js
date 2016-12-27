@@ -9,18 +9,16 @@ var app = {
 	questionIdArea: $("#questionId"),
 	categoryArea: $("#category"),
 	questionArea: $("#question"),
+	layoutBordBlock: $(".layoutBord"),
 	lettersArea: $("#lettersBlock"),
 	addLettersArea: $("#inputBlock"),
+	buttonsLettersArea: [],
+	buttonsInputArea: [],
 	correctMarkArea: $("#corectMark"),
 	buttonNext: $("#nextQuestion"),
-	userAnswer: ""
+	userAnswer: []
 };
-
-window.onload = function () {
-	app.set_date();
-
-};
-
+	
 app.get_date = function () {
 	return {
 		"id": 312,
@@ -58,12 +56,12 @@ app.set_letters = function () {
 	}
 	do {lettersArrayMixed = lettersArray.shuffle();}
 	while(lettersArrayMixed.join("") === app.answer);
-	console.log(lettersArray);
 	for(var i = 0; i < length; i += 1) {
 		app.lettersArea.append('<button>' + lettersArray[i] + '</button>');
 	}
 }
 
+//Fill html with data
 app.set_date = function () {
 	app.get_date_obj();
 	app.questionIdArea.text('Question #'+ app.id);
@@ -73,36 +71,53 @@ app.set_date = function () {
 	app.set_letters();
 }
 
-//interact with letters
-app.lettersArea.click(function(event) {
-	app.addLettersArea.append(event.target);
-	app.userAnswer += $(event.target).text();
-	if(app.userAnswer.length === app.answer.length) {
-		if(app.userAnswer === app.answer) {
-			app.addLettersArea.css("border", "2px solid #00cc00");
-			app.correctMarkArea.append('<p>&#10004;Correct</p>');
-			console.log(1);
-		} else {
-			app.addLettersArea.css("border", "2px solid red");
-			app.correctMarkArea.append('<p>&#10008; Incorrect</p>');
-			app.correctMarkArea.css("color", "red");
-			app.buttonNext.css("visibility", "hidden");
-			console.log(2);
-		}
+window.onload = function () {
+	app.set_date();
+	app.buttonsLettersArea = $("#lettersBlock button");
+	var fun1 = function(event) {	
+		app.addLettersArea.append(event.target);
+		console.log(event.target);
+		app.buttonsInputArea = $("#inputBlock button");
+		console.log(app.buttonsLettersArea);
 	}
-});
-app.addLettersArea.click(function(event) {
-	app.lettersArea.append(event.target);
+	var fun2 = function(e) {
+		app.lettersArea.append(e.target);
+		console.log(event.target);
+	}
+	$("#lettersBlock button").on('click', fun1);
 
-	// var answ = app.userAnswer.split(""),
-	// 	currentLetter = $(event.target).text(),
-	// 	i = answ.indexOf(currentLetter);
-	// app.userAnswer = app.userAnswer.substring(0, i-1);
-	//  // + app.userAnswer.substring(i+1, answ.length - 1);
-	// console.log(app.userAnswer);
-});
+	$("#inputBlock button").on('click', fun2);
 
-//check answer
-// app.check_answer = function(element) {
-
-// }
+	//interact with letters
+	// app.buttonsLettersArea.click(function(event) {
+	// 	app.addLettersArea.append(event.target);
+	// 	// app.buttonsInputArea = $("#inputBlock button");
+	// 	// console.log(app.buttonsInputArea);
+	// 	app.userAnswer.push($(event.target).text());
+	// 	console.log(app.userAnswer);
+	// 	if(app.userAnswer.length === app.answer.length && app.userAnswer.join("") === app.answer) {
+	// 		app.layoutBordBlock.addClass('correct');
+	// 		app.correctMarkArea.append('<p>&#10004;Correct</p>');
+	// 	} else if (app.userAnswer.length === app.answer.length && app.userAnswer.join("") !== app.answer){
+	// 		// console.log(1);
+	// 		app.layoutBordBlock.removeClass('correct')
+	// 		app.layoutBordBlock.addClass('incorrect');
+	// 		app.correctMarkArea.append('<p>&#10008; Incorrect</p>');
+	// 	}
+	// });
+	// app.buttonsInputArea = $("#inputBlock button");
+	// app.buttonsInputArea.click(function(event) {
+	// 	console.log(app.buttonsInputArea);
+	// 	var letter = $(event.target).text();
+	// 	console.log(app.userAnswer);
+	// 	app.lettersArea.append(event.target);
+	// 	for(var i = 0, length = app.userAnswer.length; i < length; i += 1) {
+	// 		if(app.userAnswer[i] === letter) {
+	// 			console.log(1);
+	// 			app.userAnswer.splice(i, 1);
+	// 			console.log(app.userAnswer);
+	// 		}
+	// 	}
+	// });
+};
+	
