@@ -1,5 +1,4 @@
 var app = {
-	nextMark: true,
 	//Elements to input data
 	layoutBordBlock: $(".layoutBord"),
 	lettersArea: $("#lettersBlock"),
@@ -66,8 +65,6 @@ app.set_letters = function (data) {
 	}
 }
 
-//interact with letters part1 - allLettersBlock
-
 // app.lettersClickEvent = function(event) {
 // 	var letter = $(event.target).text(),
 // 		data = event.data;
@@ -88,6 +85,7 @@ app.set_letters = function (data) {
 // { extra : '#inputBlock' },
 //  { extra : '#lettersBlock' },
 
+//interact with letters part1 - allLettersBlock
 app.lettersAreaEvent = function(event) {
 	var letter = $(event.target).text();
 	app.addLettersArea.append('<button>' + letter + '</button>');
@@ -141,20 +139,14 @@ app.commonForCounters = function () {
 	$("#answersScore p").text("Correct Answers: " + app.counterCorrectAnswers);
 	$("#questionsScore p").text("Total Questions: " + app.counterTotalQuestion);
 	app.addLettersArea.empty();
-	// app.get_date();
 	app.get_date();
 	app.userAnswer = [];
-	// if(!app.nextMark) {
-	// 	$("body").on('click', "#inputBlock button", app.inputAreaEvent);
-	// 	app.nextMark = true;
-	// }
 	app.layoutBordBlock.removeClass('correct');
 	app.correctMarkArea.text("");
 }
 app.nextQuestionEvent = function () {
 	app.counterCorrectAnswers += 1;
 	app.layoutBordBlock.removeClass('correct');
-	app.nextMark = false;
 	app.commonForCounters();
 }
 $("#nextQuestion").on("click", app.nextQuestionEvent);
