@@ -65,26 +65,6 @@ app.set_letters = function (data) {
 	}
 }
 
-// app.lettersClickEvent = function(event) {
-// 	var letter = $(event.target).text(),
-// 		data = event.data;
-// 	app.addLettersArea.append('<button>' + letter + '</button>');
-// 	$(event.target).remove();
-// 	app.change_view();
-// 	if(data.extra === "#lettersBlock") {
-// 		app.userAnswer.push(letter);
-// 	} else if (data.extra === "#inputBlock") {
-// 		for(var i = 0, length = app.userAnswer.length; i < length; i += 1) {
-// 		if(letter === app.userAnswer[i]) {
-// 			app.userAnswer.splice(i, 1);
-// 			break;
-// 		}
-// 	}
-// 	}
-// }
-// { extra : '#inputBlock' },
-//  { extra : '#lettersBlock' },
-
 //interact with letters part1 - allLettersBlock
 app.lettersAreaEvent = function(event) {
 	var letter = $(event.target).text();
@@ -118,7 +98,7 @@ app.change_view = function () {
 		if(app.answer === app.userAnswer.join("")) {
 			app.layoutBordBlock.addClass('correct');
 			app.correctMarkArea.append('<p>&#10004;Correct</p>');
-		} else  if (app.layoutBordBlock.hasClass('incorrect')) {
+		} else  if (app.answer === app.userAnswer.join("") && app.layoutBordBlock.hasClass('incorrect')) {
 			app.layoutBordBlock.removeClass('incorrect');
 			app.correctMarkArea.text("");
 		} else if(app.answer !== app.userAnswer.join("")) {
