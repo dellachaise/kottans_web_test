@@ -29,9 +29,9 @@ app.get_date = function getQuestion() {
             answer = resp[0].answer;
             //set data
             $("#question").text(resp[0].question);
-            console.log(answer);
             $("#questionId").text('Question #' + resp[0].id);
             $("#category").text("Category: " + resp[0].category.title);
+            console.log(answer);
             //set letters
             app.set_letters(answer);
         }
@@ -67,61 +67,73 @@ app.set_letters = function (data) {
 }
 
 //interact with letters part1 - allLettersBlock
+
+// app.lettersClickEvent = function(event) {
+// 	var letter = $(event.target).text(),
+// 		data = event.data;
+// 	app.addLettersArea.append('<button>' + letter + '</button>');
+// 	$(event.target).remove();
+// 	app.change_view();
+// 	if(data.extra === "#lettersBlock") {
+// 		app.userAnswer.push(letter);
+// 	} else if (data.extra === "#inputBlock") {
+// 		for(var i = 0, length = app.userAnswer.length; i < length; i += 1) {
+// 		if(letter === app.userAnswer[i]) {
+// 			app.userAnswer.splice(i, 1);
+// 			break;
+// 		}
+// 	}
+// 	}
+// }
+// { extra : '#inputBlock' },
+//  { extra : '#lettersBlock' },
+
 app.lettersAreaEvent = function(event) {
 	var letter = $(event.target).text();
 	app.addLettersArea.append('<button>' + letter + '</button>');
 	event.target.remove();
 	app.userAnswer.push(letter);
-
-	//change view
-	if(app.answer.length === app.userAnswer.length) {
-		if(app.answer === app.userAnswer.join("")) {
-			app.layoutBordBlock.addClass('correct');
-			app.correctMarkArea.append('<p>&#10004;Correct</p>');
-			console.log("off");
-			$("body").off('click', "#inputBlock button", app.inputAreaEvent);
-			console.log("off");
-		} else {
-			app.layoutBordBlock.removeClass('correct');
-			app.layoutBordBlock.addClass('incorrect');
-			app.correctMarkArea.append('<p>&#10008; Incorrect</p>');
-			// $("body").on('click', "#inputBlock button", app.inputAreaEvent);
-			if(!app.nextMark) {
-				$("body").on('click', "#inputBlock button", app.inputAreaEvent);
-				app.nextMark = true;
-			}
-		}
-	}
+	app.change_view();
 }
 
 $("body").on('click', "#lettersBlock button", app.lettersAreaEvent);
 
-//interact with letters	- part2 answerLettersBlock
-app.inputAreaEvent = function(e) {
-	var letter = $(e.target).text();
-	console.log(e.target);
+// interact with letters	- part2 answerLettersBlock
+app.inputAreaEvent = function(event) {
+	var pressedButton = $(event.target),
+		letter = pressedButton.text();
 	app.lettersArea.append('<button>' + letter + '</button>');
-	e.target.remove();
+	pressedButton.remove();
 	for(var i = 0, length = app.userAnswer.length; i < length; i += 1) {
 		if(letter === app.userAnswer[i]) {
 			app.userAnswer.splice(i, 1);
 			break;
 		}
 	}
-	if(app.answer.length !== app.userAnswer.length && (app.layoutBordBlock.hasClass('correct') 
+	app.change_view();
+}
+$("body").on('click', "#inputBlock button", app.inputAreaEvent);
+
+//change view
+app.change_view = function () {
+	if(app.answer.length === app.userAnswer.length) {
+		if(app.answer === app.userAnswer.join("")) {
+			app.layoutBordBlock.addClass('correct');
+			app.correctMarkArea.append('<p>&#10004;Correct</p>');
+		} else  if (app.layoutBordBlock.hasClass('incorrect')) {
+			app.layoutBordBlock.removeClass('incorrect');
+			app.correctMarkArea.text("");
+		} else if(app.answer !== app.userAnswer.join("")) {
+			app.layoutBordBlock.addClass('incorrect');
+			app.correctMarkArea.append('<p>&#10008; Incorrect</p>');
+		}
+	} else if (app.answer.length !== app.userAnswer.length && (app.layoutBordBlock.hasClass('correct') 
 		|| app.layoutBordBlock.hasClass('incorrect'))) {
 		app.layoutBordBlock.removeClass('correct');
 		app.layoutBordBlock.removeClass('incorrect');
 		app.correctMarkArea.text("");
-	} else if(app.answer.length === app.userAnswer.length && app.layoutBordBlock.hasClass('incorrect')) {
-		app.layoutBordBlock.removeClass('incorrect');
-		app.correctMarkArea.text("");
-	} else if(app.answer.length === app.userAnswer.length && app.answer === app.userAnswer.join("")) {
-		app.layoutBordBlock.addClass('correct');
-		app.correctMarkArea.append('<p>&#10004;Correct</p>');
 	}
 }
-$("body").on('click', "#inputBlock button", app.inputAreaEvent);
 
 //change score counters
 app.commonForCounters = function () {
@@ -132,10 +144,10 @@ app.commonForCounters = function () {
 	// app.get_date();
 	app.get_date();
 	app.userAnswer = [];
-	if(!app.nextMark) {
-		$("body").on('click', "#inputBlock button", app.inputAreaEvent);
-		app.nextMark = true;
-	}
+	// if(!app.nextMark) {
+	// 	$("body").on('click', "#inputBlock button", app.inputAreaEvent);
+	// 	app.nextMark = true;
+	// }
 	app.layoutBordBlock.removeClass('correct');
 	app.correctMarkArea.text("");
 }
