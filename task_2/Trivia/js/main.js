@@ -13,103 +13,103 @@ var app = {
 };
 
 window.onload = function () {
-	app.get_date();
+	app.getData();
 	$("#answersScore p").text("Correct Answers: " + app.counterCorrectAnswers);
 	$("#questionsScore p").text("Total Questions: " + app.counterTotalQuestion);
+	$("body").on('click', "#lettersBlock button", app.lettersAreaEvent);
+	$("body").on('click', "#inputBlock button", app.inputAreaEvent);
+	$("#nextQuestion").on("click", app.nextQuestionEvent);
+	$("#skipButton").on("click", app.skipEvent);
 };
 //Ajax Request
-app.get_date = function getQuestion() {
+app.getData = function getQuestion() {
     var	resp,
-    	answer,
-    	xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            resp = JSON.parse(xhr.responseText);
-            answer = resp[0].answer;
-            //set data
-            $("#question").text(resp[0].question);
-            $("#questionId").text('Question #' + resp[0].id);
-            $("#category").text("Category: " + resp[0].category.title);
-            console.log(answer);
-            //set letters
-            app.set_letters(answer);
-        }
-    }
-    xhr.open("GET", "http://jservice.io/api/random", true);
-    xhr.send();
+    	answer;
+
+    $.getJSON("http://jservice.io/api/random", function(resp) {
+        answer = resp[0].answer;
+        //set data
+        $("#question").text(resp[0].question);
+        $("#questionId").text('Question #' + resp[0].id);
+        $("#category").text("Category: " + resp[0].category.title);
+        console.log(answer);
+        //set letters
+        app.setLetters(answer);
+    })
 }
 
 //Mix letters
 Array.prototype.shuffle = function() {
+	var num, d;
+
     for (var i = this.length - 1; i > 0; i--) {
-        var num = Math.floor(Math.random() * (i + 1));
-        var d = this[num];
+        num = Math.floor(Math.random() * (i + 1));
+        d = this[num];
         this[num] = this[i];
         this[i] = d;
     }
     return this;
 }
 
-app.set_letters = function (data) {
+app.setLetters = function (data) {
 	var length = data.length,
-		lettersArray = [],
-		lettersArrayMixed;
+		lettersArray = data.split('');
 	app.answer = data;
-	for(var i = 0; i < length; i += 1) {
-		lettersArray.push(data[i]);
+
+	do {
+		lettersArray.shuffle();
 	}
-	do {lettersArrayMixed = lettersArray.shuffle();}
-	while(lettersArrayMixed.join("") === data);
+	while(length > 1 && lettersArray.join("") === data);
+
 	for(var i = 0; i < length; i += 1) {
-		app.lettersArea.append('<button>' + lettersArray[i] + '</button>');
+		app.addLetterInputArea(lettersArray[i]);
 	}
 }
 
-//interact with letters part1 - allLettersBlock
+//interact with letters
+app.addLetterLettersArea = function(letter) {
+	app.addLettersArea.append('<button>' + letter + '</button>');
+}
+
+app.addLetterInputArea = function(letter) {
+	app.lettersArea.append('<button>' + letter + '</button>');
+}
+
 app.lettersAreaEvent = function(event) {
 	var letter = $(event.target).text();
-	app.addLettersArea.append('<button>' + letter + '</button>');
+	app.addLetterLettersArea(letter);
 	event.target.remove();
 	app.userAnswer.push(letter);
-	app.change_view();
+	app.changeView();
 }
 
-$("body").on('click', "#lettersBlock button", app.lettersAreaEvent);
-
-// interact with letters	- part2 answerLettersBlock
 app.inputAreaEvent = function(event) {
 	var pressedButton = $(event.target),
 		letter = pressedButton.text();
-	app.lettersArea.append('<button>' + letter + '</button>');
+	app.addLetterInputArea(letter);
 	pressedButton.remove();
+
 	for(var i = 0, length = app.userAnswer.length; i < length; i += 1) {
 		if(letter === app.userAnswer[i]) {
 			app.userAnswer.splice(i, 1);
 			break;
 		}
 	}
-	app.change_view();
+	app.changeView();
 }
-$("body").on('click', "#inputBlock button", app.inputAreaEvent);
+
 
 //change view
-app.change_view = function () {
+app.changeView = function () {
 	if(app.answer.length === app.userAnswer.length) {
 		if(app.answer === app.userAnswer.join("")) {
 			app.layoutBordBlock.addClass('correct');
-			app.correctMarkArea.append('<p>&#10004;Correct</p>');
-		} else  if (app.answer === app.userAnswer.join("") && app.layoutBordBlock.hasClass('incorrect')) {
-			app.layoutBordBlock.removeClass('incorrect');
-			app.correctMarkArea.text("");
-		} else if(app.answer !== app.userAnswer.join("")) {
+		} else {
 			app.layoutBordBlock.addClass('incorrect');
-			app.correctMarkArea.append('<p>&#10008; Incorrect</p>');
 		}
-	} else if (app.answer.length !== app.userAnswer.length && (app.layoutBordBlock.hasClass('correct') 
-		|| app.layoutBordBlock.hasClass('incorrect'))) {
+	} else {
 		app.layoutBordBlock.removeClass('correct');
 		app.layoutBordBlock.removeClass('incorrect');
-		app.correctMarkArea.text("");
 	}
 }
 
@@ -119,17 +119,16 @@ app.commonForCounters = function () {
 	$("#answersScore p").text("Correct Answers: " + app.counterCorrectAnswers);
 	$("#questionsScore p").text("Total Questions: " + app.counterTotalQuestion);
 	app.addLettersArea.empty();
-	app.get_date();
+	app.getData();
 	app.userAnswer = [];
 	app.layoutBordBlock.removeClass('correct');
-	app.correctMarkArea.text("");
 }
+//press NEXT button
 app.nextQuestionEvent = function () {
 	app.counterCorrectAnswers += 1;
 	app.layoutBordBlock.removeClass('correct');
 	app.commonForCounters();
 }
-$("#nextQuestion").on("click", app.nextQuestionEvent);
 
 //press SKIP button
 app.skipEvent = function () {
@@ -137,5 +136,3 @@ app.skipEvent = function () {
 	app.commonForCounters();
 	app.layoutBordBlock.removeClass('incorrect');
 }
-$("#skipButton").on("click", app.skipEvent);
-

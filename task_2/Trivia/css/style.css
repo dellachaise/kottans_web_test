@@ -97,7 +97,7 @@ header {
 		color: white;
 		font-size: 1.3rem;
 	}
-
+/*Styles for correct/incorrect mark*/
 	.correct #corectMark p {
 		color: #00cc00;
 	}
@@ -119,3 +119,15 @@ header {
 	.correct #lettersBlock {
 		display: none;
 	}
+
+
+.correct-message,
+.incorrect-message {
+	display: none;
+}
+.correct .correct-message,
+.incorrect .incorrect-message {
+	display: inline;
+}
+
+
