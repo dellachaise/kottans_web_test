@@ -9,4 +9,4 @@
 
 - task_2
 	* [Freecodecamp: Intermediate Algorithm Scripting](https://www.freecodecamp.com/dellachaise)
-	* [Trivia-Demo]()
+	* [Trivia-Demo](https://dellachaise.github.io/kottans_web_test/)
