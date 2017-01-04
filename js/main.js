@@ -26,7 +26,7 @@ app.getData = function getQuestion() {
     var	resp,
     	answer;
 
-    $.getJSON("http://jservice.io/api/random", function(resp) {
+    $.getJSON("https://jservice.io/api/random", function(resp) {
         answer = resp[0].answer;
         //set data
         $("#question").text(resp[0].question);
